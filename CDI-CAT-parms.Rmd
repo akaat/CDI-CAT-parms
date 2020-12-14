@@ -1,0 +1,53 @@
+---
+title: "IRT Parameters for CAT"
+author: "George Kachergis & Michael C. Frank"
+date: "12/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(mirt)
+library(mirtCAT)
+```
+
+# Production
+
+
+## English
+
+```{r prod-en}
+load("production/eng_ws_wg_mod_2pl_nobad.Rds")
+load("production/preferredCAT_eng.Rds")
+```
+
+Productive CDI vocabulary of `r nrow(fscores_2pl)` English-speaking children ages 12-36 months used to fit a 2PL model with `r nrow(coefs_2pl)` items (after pruning).
+
+## Spanish
+
+```{r prod-sp}
+load("production/sp_ws_wg_mod_2pl_nobad.Rds")
+load("production/preferredCAT_sp.Rds")
+```
+
+Productive CDI vocabulary of `r nrow(fscores_2pl)` Spanish-speaking children ages 12-30 months used to fit a 2PL model with `r nrow(coefs_2pl)` items (after pruning).
+
+
+# Comprehension
+
+## English
+
+```{r comp-en}
+load("comprehension/eng_wg_mod_2pl_nobad.Rds")
+```
+
+Receptive CDI:WG vocabulary of `r nrow(fscores_2pl)` English-speaking children used to fit a 2PL model with `r nrow(coefs_2pl)` items (after pruning).
+
+
+## Spanish
+
+```{r comp-sp}
+load("comprehension/sp_wg_mod_2pl_nobad.Rds")
+```
+
+Receptive CDI:WG vocabulary of `r nrow(fscores_2pl)` Spanish-speaking children used to fit a 2PL model with `r nrow(coefs_2pl)` items (after pruning).
