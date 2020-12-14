@@ -11,8 +11,11 @@ library(mirt)
 library(mirtCAT)
 ```
 
-# Production
+# Overview
 
+The "mod_2pl" files (for Spanish/English, production/comprehension) each contain a coefs_2pl dataframe of the item parameters (in mirt's slope-intercept form), as well as a mod_2pl mirt model object, and fscores_2pl (the estimated ability parameters from Wordbank participants). 
+
+# Production
 
 ## English
 
@@ -51,3 +54,20 @@ load("comprehension/sp_wg_mod_2pl_nobad.Rds")
 ```
 
 Receptive CDI:WG vocabulary of `r nrow(fscores_2pl)` Spanish-speaking children used to fit a 2PL model with `r nrow(coefs_2pl)` items (after pruning).
+
+
+
+# Preferred CAT Settings
+
+The above item parameters can be used to run a CAT, for example with the mirtCAT package. 
+Based on real data simulations, we recommend a minimum of 25 items, a maximum of 50, with termination at SE = .15, and ML scoring.
+In the below call, the maximally-informative (MI) start item is chosen, but we can instead supply an age-based starting item (based on mean theta for each age) if you can use that.
+
+```{r cat-settings, eval=F}
+mirtCAT(mo = mod_2pl, criteria = 'MI', start_item = 'MI', 
+                     method = 'ML', cl = cl, #local_pattern = dat, 
+                     design = list(min_items = 25,
+                                   max_items = 50, 
+                                   min_SEM = 0.15))
+```
+
