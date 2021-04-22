@@ -170,8 +170,39 @@ Strong correlations between children's estimated comprehension and production ab
 
 Fit GLM to predict vocabulary size from IRT ability (and age and sex?).
 
-```{r}
+```{r, echo=F}
+demo <- list()
+load("data/wordbank_eng_wg_webcdi.Rds")
+demo$en_comp <- d_demo %>% mutate(Language = "English")
+load("data/wordbank_eng_ws_wg_webcdi31-36mos.Rds")
+demo$en_prod <- d_demo %>% mutate(Language = "English")
 
+load("data/wordbank_sp_wg_webcdi.Rds")
+demo$sp_comp <- d_demo %>% mutate(Language = "Spanish")
+load("data/wordbank_sp_ws_wg_webcdi12-30mos.Rds")
+demo$sp_prod <- d_demo %>% mutate(Language = "Spanish")
+
+demo$en_comp <- demo$en_comp %>% left_join(ab$en_comp %>% type_convert())
+demo$sp_comp <- demo$sp_comp %>% left_join(ab$sp_comp %>% type_convert())
+
+demo$en_prod <- demo$en_prod %>% left_join(ab$en_prod %>% type_convert())
+demo$sp_prod <- demo$sp_prod %>% left_join(ab$sp_prod %>% type_convert())
+
+#ability <- ability %>% 
+#  type_convert() %>%
+#  left_join(demo$en_comp) %>%
+#  left_join(demo$en_prod) %>%
+#  left_join(demo$sp_comp) %>%
+#  left_join(demo$sp_prod)
+# some NAs in production for some reason...
+
+```
+
+
+```{r}
+en_comp <- lme4::lmer(comprehension ~ age + sex + ability + (1 | data_id), 
+                       data=demo$en_comp)
+# cor(demo$en_comp$comprehension, demo$en_comp$ability)
 ```
 
 
