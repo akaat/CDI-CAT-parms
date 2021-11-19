@@ -63,7 +63,7 @@ Receptive CDI:WG vocabulary of `r nrow(fscores_2pl)` English-speaking children u
 ## Spanish
 
 ```{r comp-sp}
-load("comprehension/sp_wg_mod_2pl_nobad.Rds")
+load("comprehension/sp_wg_mod_2pl.Rds")
 it$sp_comp <- coefs_2pl
 ab$sp_comp <- fscores_2pl
 ```
@@ -112,7 +112,7 @@ all_wide <- all_wide %>% add_residuals(m_d) %>%
 ```{r plot-prod-vs-comp-diff, echo=F, warning=F}
 all_wide %>% 
   ggplot(aes(x=d_Production, y=d_Comprehension)) +
-  geom_point() +
+  geom_point(alpha=.2) +
   facet_wrap(. ~ Language) + 
   geom_smooth(method='lm') +
   theme_bw() + 
@@ -130,7 +130,7 @@ Outliers with easier comprehension than production seem to be mostly verbs.
 ```{r, echo=F, warning=F}
 all_wide %>% 
   ggplot(aes(x=a1_Production, y=a1_Comprehension)) +
-  geom_point() +
+  geom_point(alpha=.2) +
   facet_wrap(. ~ Language) + 
   geom_smooth(method='lm') +
   theme_bw() + 
@@ -157,7 +157,7 @@ ability <- ability %>% bind_rows(left_join(ab$sp_comp %>%
 
 ability %>% 
   ggplot(aes(x=comp_ability, y=prod_ability)) +
-  geom_point() + xlab("Comprehension Ability") + ylab("Production Ability") +
+  geom_point(alpha=.2) + xlab("Comprehension Ability") + ylab("Production Ability") +
   facet_wrap(. ~ Language) + 
   geom_smooth(method='lm') +
   theme_bw() + 
@@ -200,9 +200,15 @@ demo$sp_prod <- demo$sp_prod %>% left_join(ab$sp_prod %>% type_convert())
 
 
 ```{r}
-en_comp <- lme4::lmer(comprehension ~ age + sex + ability + (1 | data_id), 
+en_comp <- lm(comprehension ~ age + sex + ability, 
                        data=demo$en_comp)
-# cor(demo$en_comp$comprehension, demo$en_comp$ability)
+summary(en_comp)
+
+en_prod <- lm(production ~ age + sex + ability, 
+                       data=demo$en_prod)
+summary(en_prod)
+# cor(demo$en_comp$comprehension, demo$en_comp$ability) # .96
+# cor(demo$en_comp$age, demo$en_comp$ability) # .62
 ```
 
 
